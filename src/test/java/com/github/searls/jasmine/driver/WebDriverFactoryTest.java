@@ -19,27 +19,24 @@
  */
 package com.github.searls.jasmine.driver;
 
+import com.github.searls.jasmine.config.ImmutableWebDriverConfiguration;
 import com.github.searls.jasmine.config.WebDriverConfiguration;
+import com.github.searls.jasmine.driver.support.QuietHtmlUnitDriver;
 import com.github.searls.jasmine.mojo.Capability;
-import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import static org.openqa.selenium.remote.CapabilityType.SUPPORTS_JAVASCRIPT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WebDriverFactoryTest {
-
-  @Mock
-  private WebDriverConfiguration config;
 
   @InjectMocks
   private WebDriverFactory factory;
@@ -50,43 +47,54 @@ public class WebDriverFactoryTest {
   }
 
   @Test
-  public void createsQuietHtmlUnitDriver() throws Exception {
-    when(config.getWebDriverClassName()).thenReturn(HtmlUnitDriver.class.getName());
+  public void createsQuietHtmlUnitDriver() {
+    WebDriverConfiguration config = createMockConfig(HtmlUnitDriver.class);
     assertThat(factory.createWebDriver(config)).isExactlyInstanceOf(QuietHtmlUnitDriver.class);
   }
 
   @Test
-  public void customDriverIsCreatedWithDefaultConstructorIfNoCapabilitiesConstructorExists() throws Exception {
-    when(config.getWebDriverClassName()).thenReturn(CustomDriverWithDefaultConstructor.class.getName());
+  public void customDriverIsCreatedWithDefaultConstructorIfNoCapabilitiesConstructorExists() {
+    WebDriverConfiguration config = createMockConfig(CustomDriverWithDefaultConstructor.class);
     assertThat(factory.createWebDriver(config)).isExactlyInstanceOf(CustomDriverWithDefaultConstructor.class);
   }
 
-
   @Test
-  public void customDriverIsCreatedWithCapabilitiesIfConstructorExists() throws Exception {
-    when(config.getWebDriverClassName()).thenReturn(CustomDriverWithCapabilities.class.getName());
+  public void customDriverIsCreatedWithCapabilitiesIfConstructorExists() {
+    WebDriverConfiguration config = createMockConfig(CustomDriverWithCapabilities.class);
     assertThat(factory.createWebDriver(config)).isExactlyInstanceOf(CustomDriverWithCapabilities.class);
   }
 
   @Test
-  public void enablesJavascriptOnCustomDriver() throws Exception {
-    assertThat(createWebDriverAndReturnCapabilities().is(SUPPORTS_JAVASCRIPT)).isTrue();
+  public void enablesJavascriptOnCustomDriver() {
+    WebDriverConfiguration config = createMockConfig(CustomDriverWithCapabilities.class);
+    Capabilities capabilities = createWebDriverAndReturnCapabilities(config);
+    assertThat(capabilities.is(SUPPORTS_JAVASCRIPT)).isTrue();
   }
 
   @Test
-  public void setsCapabilityFromMap() throws Exception {
+  public void setsCapabilityFromMap() {
     Capability capability = new Capability();
     capability.setName("foo");
     capability.setValue("bar");
 
-    when(config.getWebDriverCapabilities()).thenReturn(ImmutableList.of(capability));
+    WebDriverConfiguration config = ImmutableWebDriverConfiguration.builder()
+      .debug(false)
+      .webDriverClassName(CustomDriverWithCapabilities.class.getName())
+      .addWebDriverCapabilities(capability)
+      .build();
 
-    assertThat(createWebDriverAndReturnCapabilities().getCapability("foo")).isEqualTo("bar");
+    assertThat(createWebDriverAndReturnCapabilities(config).getCapability("foo")).isEqualTo("bar");
   }
 
-  private Capabilities createWebDriverAndReturnCapabilities() throws Exception {
-    when(config.getWebDriverClassName()).thenReturn(CustomDriverWithCapabilities.class.getName());
+  private Capabilities createWebDriverAndReturnCapabilities(WebDriverConfiguration config) {
     CustomDriverWithCapabilities driver = (CustomDriverWithCapabilities) factory.createWebDriver(config);
     return driver.getCapabilities();
+  }
+
+  private <E extends WebDriver> WebDriverConfiguration createMockConfig(Class<E> webDriverClass) {
+    return ImmutableWebDriverConfiguration.builder()
+      .debug(false)
+      .webDriverClassName(webDriverClass.getName())
+      .build();
   }
 }

@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package com.github.searls.jasmine.driver;
+package com.github.searls.jasmine.driver.support;
 
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;

@@ -28,14 +28,11 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.Set;
 
-/**
- */
-class CustomDriverWithCapabilities implements WebDriver, HasCapabilities {
+public class CustomDriverWithCapabilities implements WebDriver, HasCapabilities {
 
   private final Capabilities capabilities;
 
   public CustomDriverWithCapabilities(Capabilities capabilities) {
-
     this.capabilities = capabilities;
   }
 
