@@ -22,7 +22,6 @@ package com.github.searls.jasmine.driver.support;
 import com.gargoylesoftware.htmlunit.IncorrectnessListener;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.github.searls.jasmine.driver.support.QuietHtmlUnitDriver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -30,12 +29,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isA;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-/**
- */
 @RunWith(MockitoJUnitRunner.class)
 public class QuietHtmlUnitDriverTest {
 
@@ -65,7 +62,7 @@ public class QuietHtmlUnitDriverTest {
   }
 
   @Test
-  public void installsNewAjaxController() throws Exception {
+  public void installsNewAjaxController() {
     modifyWebClient();
 
     verify(mockWebClient).setAjaxController(isA(NicelyResynchronizingAjaxController.class));

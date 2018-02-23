@@ -49,8 +49,8 @@ import static com.github.searls.jasmine.mojo.AbstractJasmineMojo.CUSTOM_RUNNER_C
 import static com.github.searls.jasmine.mojo.AbstractJasmineMojo.CUSTOM_RUNNER_TEMPLATE_PARAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
