@@ -35,7 +35,6 @@ class CustomDriverWithCapabilities implements WebDriver, HasCapabilities {
   private final Capabilities capabilities;
 
   public CustomDriverWithCapabilities(Capabilities capabilities) {
-
     this.capabilities = capabilities;
   }
 

@@ -7,7 +7,7 @@
   <packaging>maven-plugin</packaging>
 
   <name>jasmine-maven-plugin</name>
-  <description>A JavaScript unit test plugin that processes JavaScript sources and Jasmine specs, prepares test runner HTML files, executes Jasmine specs headlessly with HtmlUnit, and produces JUnit XML reports</description>
+  <description>A JavaScript unit test plugin that processes JavaScript sources and Jasmine specs, prepares test runner HTML files, executes Jasmine specs headlessly with Chrome, and produces JUnit XML reports</description>
   <url>https://github.com/searls/jasmine-maven-plugin</url>
   <licenses>
     <license>
@@ -142,7 +142,7 @@
   </ciManagement>
   <properties>
     <jetty.version>9.4.8.v20171121</jetty.version>
-    <selenium.version>3.8.1</selenium.version>
+    <selenium.version>3.141.59</selenium.version>
     <jasmine.version>2.6.0</jasmine.version>
     <mockito.version>3.5.10</mockito.version>
     <webdrivermanager.version>4.2.0</webdrivermanager.version>
